@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "dailyMeal")
 @Data
@@ -17,8 +19,12 @@ public class Day {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String date;
 
+    @Column(name = "date", nullable = false, updatable = false)
+    @Builder.Default
+    private LocalDate date = LocalDate.now();
+
+    @Column(name = "meal")
     @OneToOne(cascade = CascadeType.ALL)
     private Meal meal;
 }
