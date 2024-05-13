@@ -41,12 +41,6 @@ public class UserServiceImplement implements UserService{
         if (user.getName() != null && !"".equalsIgnoreCase(user.getName())) {
             user.setName(user.getName());
         }
-        if (user.getEmail() != null && !"".equalsIgnoreCase(user.getEmail())) {
-            user.setEmail(user.getEmail());
-        }
-        if (user.getPassword() != null && !"".equalsIgnoreCase(user.getPassword())) {
-            user.setPassword(user.getPassword());
-        }
         return userRepository.save(user);
     }
 

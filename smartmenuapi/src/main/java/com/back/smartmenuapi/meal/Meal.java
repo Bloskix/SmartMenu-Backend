@@ -28,5 +28,6 @@ public class Meal {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Ingredient> ingredients;
 
+    @Column(name = "prep_time")
     private Integer prepTime;
 }

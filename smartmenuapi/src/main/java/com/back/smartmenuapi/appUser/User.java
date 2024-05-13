@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@Table(name = "appUser")
+@Table(name = "app_user")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,8 +21,4 @@ public class User {
     private Long id;
     @NotBlank(message = "Name is mandatory")
     private String name;
-    @NotBlank(message = "Email is mandatory")
-    private String email;
-    @Length(min = 6, message = "Password should have at least 6 characters")
-    private String password;
 }
