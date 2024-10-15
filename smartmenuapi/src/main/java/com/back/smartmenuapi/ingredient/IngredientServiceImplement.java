@@ -24,7 +24,6 @@ public class IngredientServiceImplement implements IngredientService {
             ingredientDb.setQuantity(ingredientDb.getQuantity() + ingredient.getQuantity());
             return ingredientRepository.save(ingredientDb);
         } else {
-            // Save new ingredient
             return ingredientRepository.save(ingredient);
         }
     }
@@ -65,11 +64,18 @@ public class IngredientServiceImplement implements IngredientService {
     }
 
     @Override
-    public void deleteIngredient(Long id) {
+    public void deleteIngredient(Long id, int quantity) {
         Ingredient ingredientDb = ingredientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ingredient not found"));
 
-        ingredientRepository.delete(ingredientDb);
+        int newQuantity = ingredientDb.getQuantity() - quantity;
+
+        if (newQuantity <= 0) {
+            ingredientRepository.delete(ingredientDb);
+        } else {
+            ingredientDb.setQuantity(newQuantity);
+            ingredientRepository.save(ingredientDb);
+        }
     }
 }
 

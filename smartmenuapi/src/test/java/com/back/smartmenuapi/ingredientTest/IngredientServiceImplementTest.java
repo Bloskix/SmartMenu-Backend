@@ -116,12 +116,15 @@ public class IngredientServiceImplementTest {
         Ingredient ingredient = new Ingredient();
         ingredient.setId(1L);
         ingredient.setName("Lettuce");
+        ingredient.setQuantity(10);
 
         when(ingredientRepository.findById(anyLong())).thenReturn(Optional.of(ingredient));
 
-        ingredientService.deleteIngredient(1L);
+        int quantityToDelete = 5;
+        ingredientService.deleteIngredient(1L, quantityToDelete);
 
-        verify(ingredientRepository, times(1)).delete(ingredient);
+        verify(ingredientRepository, times(1)).findById(1L);
+        assertEquals(5, ingredient.getQuantity());
     }
 }
 

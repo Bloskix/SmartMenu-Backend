@@ -117,11 +117,31 @@ public class IngredientControllerTest {
 
     @Test
     public void testDeleteIngredient() throws Exception {
+        int quantity = 5;
+
         mockMvc.perform(delete("/ingredients/1")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(String.valueOf(quantity))) // Pass the quantity in the request body
                 .andExpect(status().isOk());
 
-        verify(ingredientService, times(1)).deleteIngredient(1L);
+        verify(ingredientService, times(1)).deleteIngredient(1L, quantity); // Verify with the quantity parameter
+    }
+
+    @Test
+    public void testDeleteIngredient_ReduceQuantity() throws Exception {
+        int quantityToDelete = 5;
+        Ingredient ingredient = new Ingredient(1L, "Tomato", 10, null);
+
+        when(ingredientService.findIngredientById(1L)).thenReturn(ingredient);
+
+        mockMvc.perform(delete("/ingredients/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(String.valueOf(quantityToDelete)))
+                .andExpect(status().isOk());
+
+        verify(ingredientService, times(1)).deleteIngredient(1L, quantityToDelete);
+
+        verify(ingredientService, times(1)).findIngredientById(1L);
     }
 }
 
