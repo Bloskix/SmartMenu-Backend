@@ -6,32 +6,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/ingredients")
 public class IngredientController {
 
     @Autowired
     IngredientService ingredientService;
 
-    @PostMapping("/saveIngredient")
+    @PostMapping
     public Ingredient createIngredient(@RequestBody Ingredient ingredient) {
         return ingredientService.saveIngredient(ingredient);
     }
 
-    @GetMapping("/findAllIngredients")
+    @GetMapping
     public List<Ingredient> getAllIngredients() {
         return ingredientService.findAllIngredients();
     }
 
-    @GetMapping("/findIngredientById/{id}")
+    @GetMapping("/{id}")
     public Ingredient getIngredientById(@PathVariable Long id) {
         return ingredientService.findIngredientById(id);
     }
 
-    @PutMapping("/updateIngredient/{id}")
+    @PutMapping("/{id}")
     public Ingredient updateIngredient(@PathVariable Long id, @RequestBody Ingredient ingredient) {
         return ingredientService.updateIngredient(id, ingredient);
     }
 
-    @DeleteMapping("/deleteIngredient/{id}")
+    @DeleteMapping("/{id}")
     public void deleteIngredient(@PathVariable Long id) {
         ingredientService.deleteIngredient(id);
     }
