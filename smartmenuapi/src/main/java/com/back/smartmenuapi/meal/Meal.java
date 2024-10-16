@@ -1,5 +1,3 @@
-//Este archivo es una entidad que representa la tabla de alimentos en la base de datos, y se mapea a través de JPA
-
 package com.back.smartmenuapi.meal;
 
 import com.back.smartmenuapi.ingredient.Ingredient;
@@ -19,14 +17,24 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class Meal {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @NotBlank(message = "Name is mandatory")
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "meal_ingredient",
+            joinColumns = @JoinColumn(name = "meal_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
     private List<Ingredient> ingredients;
+
+    @Enumerated(EnumType.STRING)
+    private MealType type;
 
     @Column(name = "prep_time")
     private Integer prepTime;

@@ -1,24 +1,27 @@
 package com.back.smartmenuapi.meal;
 
-import com.back.smartmenuapi.error.NotFoundException;
 import com.back.smartmenuapi.ingredient.IngredientService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class MealServiceImplement implements MealService {
 
     @Autowired
     MealRepository mealRepository;
+
     @Autowired
     IngredientService ingredientService;
 
     @Override
     public Meal saveMeal(Meal meal) {
+        meal.getIngredients().forEach(ingredient -> {
+            ingredientService.saveIngredient(ingredient);
+        });
+
         return mealRepository.save(meal);
     }
 
@@ -27,37 +30,53 @@ public class MealServiceImplement implements MealService {
         return mealRepository.findAll();
     }
 
-
     @Override
-    public Meal findByNameIgnoreCase(String name) throws NotFoundException {
-        Optional<Meal> meal = mealRepository.findByNameIgnoreCase(name);
-        if (meal.isEmpty()) {
-            throw new NotFoundException("Meal not found in database");
-        }
-        return meal.get();
+    public Meal findMealById(Long id) {
+        return mealRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Meal not found"));
     }
 
     @Override
-    public Meal updateMeal(Long id, Meal meal) throws NotFoundException {
-        Optional<Meal> mealOptional = mealRepository.findById(id);
-        if (mealOptional.isEmpty()) {
-            throw new NotFoundException("Meal not found in database");
-        }
-        if (Objects.nonNull(meal.getPrepTime())) {
-            meal.setPrepTime(meal.getPrepTime());
-        }
-        if (Objects.nonNull(meal.getIngredients())) {
-            meal.setIngredients(meal.getIngredients());
-        }
-        return mealRepository.save(meal);
+    public Meal findByNameIgnoreCase(String name) {
+        return mealRepository.findByNameIgnoreCase(name)
+                .orElseThrow(() -> new EntityNotFoundException("Meal not found"));
     }
 
     @Override
-    public void deleteMeal(Long id) throws NotFoundException {
-        Optional<Meal> meal = mealRepository.findById(id);
-        if (meal.isEmpty()) {
-            throw new NotFoundException("Meal not found in database");
+    public Meal updateMeal(Long id, Meal meal) {
+        Meal existingMeal = mealRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Meal not found"));
+
+        if (meal.getName() != null) {
+            existingMeal.setName(meal.getName());
         }
+
+        if (meal.getPrepTime() != null) {
+            existingMeal.setPrepTime(meal.getPrepTime());
+        }
+
+        if (meal.getType() != null) {
+            existingMeal.setType(meal.getType());
+        }
+
+        if (meal.getIngredients() != null) {
+            meal.getIngredients().forEach(ingredient -> {
+                ingredientService.updateIngredient(ingredient.getId(), ingredient);
+            });
+        }
+
+        return mealRepository.save(existingMeal);
+    }
+
+    @Override
+    public void deleteMeal(Long id) {
+        Meal meal = mealRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Meal not found"));
+
+        meal.getIngredients().forEach(ingredient -> {
+            ingredientService.deleteIngredient(ingredient.getId(), ingredient.getQuantity());
+        });
+
         mealRepository.deleteById(id);
     }
 }
