@@ -1,6 +1,7 @@
 package com.back.smartmenuapi.ingredient;
 
 import com.back.smartmenuapi.meal.Meal;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class Ingredient {
     private Integer quantity;
 
     @ManyToMany(mappedBy = "ingredients")
+    @JsonIgnore
     private List<Meal> meals;
 
     public void validateQuantity() {

@@ -1,7 +1,5 @@
 package com.back.smartmenuapi.meal;
 
-import com.back.smartmenuapi.error.NotFoundException;
-
 import java.util.List;
 
 public interface MealService {

@@ -74,7 +74,7 @@ public class MealServiceImplement implements MealService {
                 .orElseThrow(() -> new EntityNotFoundException("Meal not found"));
 
         meal.getIngredients().forEach(ingredient -> {
-            ingredientService.deleteIngredient(ingredient.getId(), ingredient.getQuantity());
+            ingredientService.deleteIngredient(ingredient.getId());
         });
 
         mealRepository.deleteById(id);

@@ -4,9 +4,11 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Console;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
 
 @Service
 public class IngredientServiceImplement implements IngredientService {
@@ -16,20 +18,12 @@ public class IngredientServiceImplement implements IngredientService {
 
     @Override
     public Ingredient saveIngredient(Ingredient ingredient) {
-        ingredient.validateQuantity();
-        Optional<Ingredient> existingIngredient = ingredientRepository.findByNameIgnoreCase(ingredient.getName());
-
-        if (existingIngredient.isPresent()) {
-            Ingredient ingredientDb = existingIngredient.get();
-            ingredientDb.setQuantity(ingredientDb.getQuantity() + ingredient.getQuantity());
-            return ingredientRepository.save(ingredientDb);
-        } else {
-            return ingredientRepository.save(ingredient);
-        }
+        return ingredientRepository.save(ingredient);
     }
 
     @Override
     public List<Ingredient> findAllIngredients() {
+        List<Ingredient> ingredients = ingredientRepository.findAll();
         return ingredientRepository.findAll();
     }
 
@@ -47,8 +41,6 @@ public class IngredientServiceImplement implements IngredientService {
 
     @Override
     public Ingredient updateIngredient(Long id, Ingredient ingredient) {
-        ingredient.validateQuantity();
-
         Ingredient ingredientDb = ingredientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ingredient not found"));
 
@@ -57,6 +49,7 @@ public class IngredientServiceImplement implements IngredientService {
         }
 
         if (Objects.nonNull(ingredient.getQuantity())) {
+            ingredient.validateQuantity();
             ingredientDb.setQuantity(ingredient.getQuantity());
         }
 
@@ -64,18 +57,11 @@ public class IngredientServiceImplement implements IngredientService {
     }
 
     @Override
-    public void deleteIngredient(Long id, int quantity) {
+    public void deleteIngredient(Long id) {
         Ingredient ingredientDb = ingredientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ingredient not found"));
 
-        int newQuantity = ingredientDb.getQuantity() - quantity;
-
-        if (newQuantity <= 0) {
-            ingredientRepository.delete(ingredientDb);
-        } else {
-            ingredientDb.setQuantity(newQuantity);
-            ingredientRepository.save(ingredientDb);
+        ingredientRepository.delete(ingredientDb);
         }
-    }
 }
 

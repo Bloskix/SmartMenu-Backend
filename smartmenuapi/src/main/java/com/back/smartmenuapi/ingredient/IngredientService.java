@@ -1,6 +1,5 @@
 package com.back.smartmenuapi.ingredient;
 
-import com.back.smartmenuapi.error.NotFoundException;
 
 import java.util.List;
 
@@ -16,5 +15,5 @@ public interface IngredientService {
 
     Ingredient updateIngredient(Long id, Ingredient ingredient);
 
-    void deleteIngredient(Long id, int quantity);
+    void deleteIngredient(Long id);
 }
