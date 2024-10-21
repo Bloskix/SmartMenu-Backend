@@ -1,4 +1,4 @@
-package com.back.smartmenuapi.appUser;
+/*package com.back.smartmenuapi.appUser;
 
 import com.back.smartmenuapi.error.NotFoundException;
 
@@ -12,4 +12,4 @@ public interface UserService {
     User updateUser(Long id, User user) throws NotFoundException;
     void deleteUser(Long id) throws NotFoundException;
 
-}
+}*/

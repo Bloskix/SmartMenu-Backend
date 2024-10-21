@@ -1,4 +1,4 @@
-package com.back.smartmenuapi.appUser;
+/*package com.back.smartmenuapi.appUser;
 
 import com.back.smartmenuapi.error.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,4 +53,4 @@ public class UserServiceImplement implements UserService{
         }
         userRepository.deleteById(id);
     }
-}
+}*/

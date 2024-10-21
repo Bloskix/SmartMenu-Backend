@@ -1,4 +1,4 @@
-package com.back.smartmenuapi.appUser;
+/*package com.back.smartmenuapi.appUser;
 
 import com.back.smartmenuapi.error.NotFoundException;
 import jakarta.validation.Valid;
@@ -41,4 +41,4 @@ public class UserController {
         userService.deleteUser(id);
         return "User deleted";
     }
-}
+}*/
