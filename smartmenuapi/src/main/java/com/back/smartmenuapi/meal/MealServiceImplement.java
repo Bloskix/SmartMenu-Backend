@@ -79,4 +79,9 @@ public class MealServiceImplement implements MealService {
 
         mealRepository.deleteById(id);
     }
+
+    public boolean enoughMeals() {
+        long count = mealRepository.count();
+        return count >= 14;
+    }
 }

@@ -43,4 +43,9 @@ public class MealController {
         mealService.deleteMeal(id);
         return "Meal deleted";
     }
+
+    @GetMapping("/enoughMeals")
+    public boolean checkEnoughMeals() {
+        return mealService.enoughMeals();
+    }
 }
