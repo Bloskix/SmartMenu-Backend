@@ -18,9 +18,7 @@ public class MealServiceImplement implements MealService {
 
     @Override
     public Meal saveMeal(Meal meal) {
-        meal.getIngredients().forEach(ingredient -> {
-            ingredientService.saveIngredient(ingredient);
-        });
+        meal.getIngredients().forEach(ingredient -> ingredientService.saveIngredient(ingredient));
 
         return mealRepository.save(meal);
     }
@@ -43,23 +41,29 @@ public class MealServiceImplement implements MealService {
     }
 
     @Override
+    public List<Meal> findMealsByType(MealType type) {
+        System.out.println(type);
+        return mealRepository.findByType(type);
+    }
+
+    @Override
     public Meal updateMeal(Long id, Meal meal) {
         Meal existingMeal = mealRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Meal not found"));
 
-        if (meal.getName() != null) {
+        if (meal.getName() != null && !"".equalsIgnoreCase(meal.getName())) {
             existingMeal.setName(meal.getName());
         }
 
-        if (meal.getPrepTime() != null) {
+        if (meal.getPrepTime() != null && !"".equalsIgnoreCase(meal.getName())) {
             existingMeal.setPrepTime(meal.getPrepTime());
         }
 
-        if (meal.getType() != null) {
+        if (meal.getType() != null && !"".equalsIgnoreCase(meal.getName())) {
             existingMeal.setType(meal.getType());
         }
 
-        if (meal.getIngredients() != null) {
+        if (meal.getIngredients() != null && !"".equalsIgnoreCase(meal.getName())) {
             meal.getIngredients().forEach(ingredient -> {
                 ingredientService.updateIngredient(ingredient.getId(), ingredient);
             });
@@ -80,8 +84,4 @@ public class MealServiceImplement implements MealService {
         mealRepository.deleteById(id);
     }
 
-    public boolean enoughMeals() {
-        long count = mealRepository.count();
-        return count >= 14;
-    }
 }

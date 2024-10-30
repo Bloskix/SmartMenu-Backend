@@ -16,5 +16,6 @@ public interface MealService {
 
     void deleteMeal(Long id);
 
-    boolean enoughMeals();
+    List<Meal> findMealsByType(MealType type);
+
 }

@@ -28,13 +28,19 @@ public class MealController {
         return mealService.findMealById(id);
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/name/{name}")
     public Meal findByNameIgnoreCase(@PathVariable String name) {
         return mealService.findByNameIgnoreCase(name);
     }
 
+    @GetMapping("/type/{type}")
+    public List<Meal> findMealsByType(@PathVariable MealType type) {
+        return mealService.findMealsByType(type);
+    }
+
     @PutMapping("/{id}")
     public Meal updateMeal(@PathVariable Long id, @RequestBody Meal meal) {
+        System.out.println("ID recibido en el backend: " + id);
         return mealService.updateMeal(id, meal);
     }
 
@@ -42,10 +48,5 @@ public class MealController {
     public String deleteMeal(@PathVariable Long id) {
         mealService.deleteMeal(id);
         return "Meal deleted";
-    }
-
-    @GetMapping("/enoughMeals")
-    public boolean checkEnoughMeals() {
-        return mealService.enoughMeals();
     }
 }
