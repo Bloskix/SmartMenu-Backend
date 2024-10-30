@@ -42,7 +42,6 @@ public class MealServiceImplement implements MealService {
 
     @Override
     public List<Meal> findMealsByType(MealType type) {
-        System.out.println(type);
         return mealRepository.findByType(type);
     }
 
