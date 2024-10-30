@@ -1,6 +1,5 @@
 package com.back.smartmenuapi.Auth;
 
-import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
